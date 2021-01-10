@@ -21,21 +21,21 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
       # https://hub.docker.com/_/elasticsearch/
-      elasticsearch:
-        image: elasticsearch:6.8.10
-        ports:
-          - 9209:9200
-        options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
+     # elasticsearch:
+     #   image: elasticsearch:6.8.10
+     #   ports:
+     #     - 9209:9200
+     #   options: -e="discovery.type=single-node" --health-cmd="curl http://localhost:9200/_cluster/health" --health-interval=10s --health-timeout=5s --health-retries=10
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ['7.4', '8.0']
+        php-versions: ['7.4']
     steps:
       # —— Check Elasticsearch 🔎 ——————————————————————————————————————————————
-      - name: Check the Elasticsearch connection from runner host
-        run: |
-          curl -fsSL "http://localhost:$ES_HTTP_PORT"
-          curl -fsSL "http://localhost:$ES_HTTP_PORT/_cluster/health?pretty"
+      #- name: Check the Elasticsearch connection from runner host
+      #  run: |
+      #    curl -fsSL "http://localhost:$ES_HTTP_PORT"
+      #    curl -fsSL "http://localhost:$ES_HTTP_PORT/_cluster/health?pretty"
 
       # —— Setup Github actions 🐙 —————————————————————————————————————————————
       # https://github.com/actions/checkout (official)
@@ -61,16 +61,16 @@ jobs:
           redis version: '5'
 
       ## —— Yarn 🐱 ————————————————————————————————————————————————————————————
-      - name: Yarn install
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: install
-          auth-token: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
-          registry-url: npm.fontawesome.com
-      - name: Yarn build
-        uses: borales/actions-yarn@v2.0.0
-        with:
-          cmd: run encore production
+     # - name: Yarn install
+     #   uses: borales/actions-yarn@v2.0.0
+     #   with:
+     #     cmd: install
+     #     auth-token: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
+     #     registry-url: npm.fontawesome.com
+     # - name: Yarn build
+     #   uses: borales/actions-yarn@v2.0.0
+     #   with:
+     #     cmd: run encore production
 
       # —— Composer 🧙‍️ —————————————————————————————————————————————————————————
       - name: Validate composer.json and composer.lock
